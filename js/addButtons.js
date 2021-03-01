@@ -12,10 +12,10 @@ AFRAME.registerComponent("create-buttons", {
     button2.setAttribute("id", "order-button");
     button2.setAttribute("class", "btn btn-warning mr-3");
 
-    // 3. Create the Bill button
+    // 3. Create the Summary & Total Bill button
     var button3 = document.createElement("button");
-    button3.innerHTML = "ORDER SUMMERY";
-    button3.setAttribute("id", "order-summery-button");
+    button3.innerHTML = "ORDER SUMMARY";
+    button3.setAttribute("id", "order-summary-button");
     button3.setAttribute("class", "btn btn-warning ml-3");
 
     // 2. Append somewhere

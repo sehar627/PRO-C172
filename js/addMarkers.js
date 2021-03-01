@@ -1,5 +1,5 @@
 AFRAME.registerComponent("create-markers", {
-  init: async function() {
+  init: async function () {
     var mainScene = document.querySelector("#main-scene");
     var dishes = await this.getDishes();
     dishes.map(dish => {
@@ -13,7 +13,7 @@ AFRAME.registerComponent("create-markers", {
       marker.setAttribute("markerhandler", {});
       mainScene.appendChild(marker);
 
-      // Getting todays day
+      // Getting today's day
       var todaysDate = new Date();
       var todaysDay = todaysDate.getDay();
       // Sunday - Saturday : 0 - 6
@@ -31,11 +31,12 @@ AFRAME.registerComponent("create-markers", {
         // Adding 3D model to scene
         var model = document.createElement("a-entity");
         model.setAttribute("id", `model-${dish.id}`);
-        model.setAttribute("position", dish.position);
-        model.setAttribute("rotation", dish.rotation);
-        model.setAttribute("scale", dish.scale);
+        model.setAttribute("position", dish.model_geometry.position);
+        model.setAttribute("rotation", dish.model_geometry.rotation);
+        model.setAttribute("scale", dish.model_geometry.scale);
         model.setAttribute("gltf-model", `url(${dish.model_url})`);
         model.setAttribute("gesture-handler", {});
+        model.setAttribute("visible", false);
         marker.appendChild(model);
 
         // Ingredients Container
@@ -45,6 +46,7 @@ AFRAME.registerComponent("create-markers", {
         mainPlane.setAttribute("rotation", { x: -90, y: 0, z: 0 });
         mainPlane.setAttribute("width", 1.7);
         mainPlane.setAttribute("height", 1.5);
+        mainPlane.setAttribute("visible", false);
         marker.appendChild(mainPlane);
 
         // Dish title background plane
@@ -85,10 +87,39 @@ AFRAME.registerComponent("create-markers", {
           value: `${dish.ingredients.join("\n\n")}`
         });
         mainPlane.appendChild(ingredients);
+
+        //Plane to show the price of the dish
+        var pricePlane = document.createElement("a-image");
+        pricePlane.setAttribute("id", `price-plane-${dish.id}`);
+        pricePlane.setAttribute(
+          "src", "https://raw.githubusercontent.com/whitehatjr/menu-card-app/main/black-circle.png"
+        );
+        pricePlane.setAttribute("width", 0.8);
+        pricePlane.setAttribute("height", 0.8);
+        pricePlane.setAttribute("position", { x: -1.3, y: 0, z: 0.3 });
+        pricePlane.setAttribute("rotation", { x: -90, y: 0, z: 0 });
+        pricePlane.setAttribute("visible", false);
+
+        //Price of the dish
+        var price = document.createElement("a-entity");
+        price.setAttribute("id", `price-${dish.id}`);
+        price.setAttribute("position", { x: 0.03, y: 0.05, z: 0.1 });
+        price.setAttribute("rotation", { x: 0, y: 0, z: 0 });
+        price.setAttribute("text", {
+          font: "mozillavr",
+          color: "white",
+          width: 3,
+          align: "center",
+          value: `Only\n $${dish.price}`
+        });
+
+
+        pricePlane.appendChild(price);
+        marker.appendChild(pricePlane);
       }
     });
   },
-  getDishes: async function() {
+  getDishes: async function () {
     return await firebase
       .firestore()
       .collection("dishes")
