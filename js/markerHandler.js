@@ -173,12 +173,7 @@ AFRAME.registerComponent("markerhandler", {
       });
   },
   getOrderSummary: async function (tNumber) {
-    return await firebase
-      .firestore()
-      .collection("tables")
-      .doc(tNumber)
-      .get()
-      .then(doc => doc.data());
+    // write the query
   },
   handleOrderSummary: async function () {
 
@@ -187,12 +182,9 @@ AFRAME.registerComponent("markerhandler", {
     tableNumber <= 9 ? (tNumber = `T0${tableNumber}`) : `T${tableNumber}`;
 
     //Getting Order Summary from database
-    var orderSummary = await this.getOrderSummary(tNumber);
-
+    //call the function
     //Changing modal div visibility
-    var modalDiv = document.getElementById("modal-div");
-    modalDiv.style.display = "flex";
-
+   //create modal here
     //Get the table element
     var tableBodyTag = document.getElementById("bill-table-body");
 
@@ -205,70 +197,42 @@ AFRAME.registerComponent("markerhandler", {
     currentOrders.map(i => {
 
       //Create table row
-      var tr = document.createElement("tr");
+     
 
       //Create table cells/columns for ITEM NAME, PRICE, QUANTITY & TOTAL PRICE
-      var item = document.createElement("td");
-      var price = document.createElement("td");
-      var quantity = document.createElement("td");
-      var subtotal = document.createElement("td");
-
+      
       //Add HTML content 
-      item.innerHTML = orderSummary.current_orders[i].item;
-
-      price.innerHTML = "$" + orderSummary.current_orders[i].price;
-      price.setAttribute("class", "text-center");
-
-      quantity.innerHTML = orderSummary.current_orders[i].quantity;
-      quantity.setAttribute("class", "text-center");
-
-      subtotal.innerHTML = "$" + orderSummary.current_orders[i].subtotal;
-      subtotal.setAttribute("class", "text-center");
+     
 
       //Append cells to the row
-      tr.appendChild(item);
-      tr.appendChild(price);
-      tr.appendChild(quantity);
-      tr.appendChild(subtotal);
-
+     
       //Append row to the table
-      tableBodyTag.appendChild(tr);
+      
     });
 
     //Create a table row to Total bill
-    var totalTr = document.createElement("tr");
+    
 
     //Create a empty cell (for not data)
-    var td1 = document.createElement("td");
-    td1.setAttribute("class", "no-line");
+   
 
     //Create a empty cell (for not data)
-    var td2 = document.createElement("td");
-    td1.setAttribute("class", "no-line");
+   
 
     //Create a cell for TOTAL
-    var td3 = document.createElement("td");
-    td1.setAttribute("class", "no-line text-center");
+    
 
     //Create <strong> element to emphasize the text
-    var strongTag = document.createElement("strong");
-    strongTag.innerHTML = "Total";
+    
 
-    td3.appendChild(strongTag);
+   
 
     //Create cell to show total bill amount
-    var td4 = document.createElement("td");
-    td1.setAttribute("class", "no-line text-right");
-    td4.innerHTML = "$" + orderSummary.total_bill;
+   
 
     //Append cells to the row
-    totalTr.appendChild(td1);
-    totalTr.appendChild(td2);
-    totalTr.appendChild(td3);
-    totalTr.appendChild(td4);
-
-    //Append the row to the table
-    tableBodyTag.appendChild(totalTr);
+  
+   
   },
   handlePayment: function () {
     // Close Modal
@@ -288,13 +252,7 @@ AFRAME.registerComponent("markerhandler", {
         total_bill: 0
       })
       .then(() => {
-        swal({
-          icon: "success",
-          title: "Thanks For Paying !",
-          text: "We Hope You Enjoyed Your Food !!",
-          timer: 2500,
-          buttons: false
-        });
+        //write swal here
       });
   },
   handleMarkerLost: function () {
